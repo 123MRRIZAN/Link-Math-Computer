@@ -69,6 +69,11 @@
       let trace = {x:xValues, y:yValues, type:'scatter'};
       Plotly.newPlot('graph', [trace], {margin:{t:10}});
     }
+    function downloadGraph() {
+      // Download current graph as PNG
+      Plotly.downloadImage('graph', {format: 'png', filename: 'my_graph'});
+    }
   </script>
 </body>
 </html>
+
