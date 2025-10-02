@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Graph Plotter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #34d399, #3b82f6, #9333ea);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+    input {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      color: black; /* black text */
+      width: 300px;
+    }
+    .btn {
+      background: #2563eb;
+      padding: 0.7rem 1.5rem;
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #1e40af; }
+    #graph { margin-top: 2rem; border-radius: 10px; background: none; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <nav class="bg-blue-800 p-5 flex justify-between text-white shadow-lg">
+    <h1 class="text-3xl font-bold">📈 Graph Plotter</h1>
+    <div class="space-x-6 text-xl">
+      <a href="index.html" class="hover:text-yellow-300">Home</a>
+      <a href="calculator.html" class="hover:text-yellow-300">Calculator</a>
+      <a href="graph.html" class="hover:text-yellow-300">Graph</a>
+      <a href="about.html" class="hover:text-yellow-300">About</a>
+    </div>
+  </nav>
+
+  <section class="p-10 text-center">
+    <h1 class="text-4xl font-bold">Plot Your Graph</h1>
+    <p class="mt-2">Enter a function of x (e.g., sin(x), x^2, log(x))</p>
+    <input id="functionInput" type="text" placeholder="Enter function..." 
+       style="background:white; color:black; padding:0.5rem; border-radius:5px; border:1px solid #ccc; width:300px;">
+    <button class="btn ml-3" onclick="plotGraph()">Plot</button>
+    <div id="graph" class="w-3/4 mx-auto h-96"></div>
+  </section>
+
+  <script>
+    function plotGraph() {
+      const expr = document.getElementById("functionInput").value;
+      const xValues = [];
+      const yValues = [];
+      for(let x=-10; x<=10; x+=0.1){
+        xValues.push(x);
+        try{
+          let scope = {x:x};
+          let y = math.evaluate(expr, scope);
+          yValues.push(y);
+        }catch{
+          yValues.push(null);
+        }
+      }
+      let trace = {x:xValues, y:yValues, type:'scatter'};
+      Plotly.newPlot('graph', [trace], {margin:{t:10}});
+    }
+  </script>
+</body>
+</html>
